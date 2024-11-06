@@ -11,4 +11,5 @@ app.blueprint(survey_bp)
 
 if __name__ == "__main__":
     PORT=get_env_var('PORT') | 5050
-    app.run(host="0.0.0.0", port=PORT, debug=True, auto_reload=True)
+    if get_env_var('ENVIRONMENT') == 'local':
+        app.run(host="0.0.0.0", port=PORT, debug=True, auto_reload=True)
