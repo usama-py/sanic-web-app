@@ -1,0 +1,46 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5050:5050"
+    networks:
+      - sanic_network
+    environment:
+      MONGO_URI: mongodb://mongo:27017/mydatabase
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./backend:/app
+    command: python app.py
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - sanic_network
+    environment:
+      REACT_APP_API_URL: http://backend:5050
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run start"
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - sanic_network
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  sanic_network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local  # Persist MongoDB data locally
