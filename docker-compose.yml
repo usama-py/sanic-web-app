@@ -8,7 +8,6 @@ services:
     environment:
       MONGO_URI: mongodb://mongo:27017/mydatabase
       CHOKIDAR_USEPOLLING: "true"
-      ENVIRIONMENT: local
     volumes:
       - ./backend:/app
     command: python app.py
