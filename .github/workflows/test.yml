@@ -27,15 +27,6 @@ jobs:
         run: |
           docker compose -f docker-compose.yml up -d --build
 
-      - name: Wait for MongoDB to be ready
-        run: |
-            echo "Waiting for MongoDB to be ready..."
-            docker compose exec -T mongodb bash -c "until nc -z localhost 27017; do echo 'Waiting for MongoDB...'; sleep 5; done"
-
-      - name: Wait for backend service to be ready
-        run: |
-          docker compose exec backend bash -c "until curl --silent --fail http://localhost:5050; do echo waiting for app; sleep 5; done"
-
       - name: Run tests in backend container
         run: |
           docker compose exec backend bash -c "pytest --maxfail=1 --disable-warnings"
