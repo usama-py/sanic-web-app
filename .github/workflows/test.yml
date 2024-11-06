@@ -27,6 +27,11 @@ jobs:
         run: |
           docker compose exec backend bash -c "pytest --maxfail=1 --disable-warnings"
 
+      - name: Display container logs if tests fail
+        if: failure()
+        run: |
+          docker compose -f docker-compose.yaml logs
+
       - name: Shutdown Docker Compose
         run: |
           docker compose down
