@@ -1,6 +1,6 @@
 Survey Insights:
 Overall Analysis: certain
-Cat or Dog: cats
+Cat or Dog: dogs
 Fur Value: short
 Tail Value: long
 
