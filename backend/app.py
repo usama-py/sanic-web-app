@@ -13,6 +13,8 @@ if __name__ == "__main__":
     PORT=int(get_env_var('PORT'))
     if(not PORT):
         PORT = 5050
+    else:
+        PORT = int(PORT)
     if get_env_var('ENVIRONMENT') == 'local':
         app.run(host="0.0.0.0", port=PORT, debug=True, auto_reload=True)
     else:
