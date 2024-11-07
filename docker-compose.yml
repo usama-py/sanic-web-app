@@ -13,9 +13,6 @@ services:
     environment:
       MONGO_URI: mongodb://mongo:27017/mydatabase
       CHOKIDAR_USEPOLLING: "true"
-      GEMINI_API_KEY: ${GEMINI_API_KEY}
-      ENVIRIONMENT: local
-      PORT: 5050
     volumes:
       - ./backend:/app
     command: python app.py
