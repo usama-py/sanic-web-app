@@ -26,7 +26,7 @@ jobs:
 
       - name: Wait for backend to be healthy
         run: |
-          docker compose -f docker-compose.yml wait backend
+          timeout 60s docker compose -f docker-compose.yml wait backend || echo "Timeout reached; continuing..."
 
       - name: Run tests in backend container
         run: |
