@@ -10,7 +10,7 @@ initialize_app(app)  # Loads environment and configuration
 app.blueprint(survey_bp)
 
 if __name__ == "__main__":
-    PORT=int(get_env_var('PORT'))
+    PORT=get_env_var('PORT')
     if(not PORT):
         PORT = 5050
     else:
