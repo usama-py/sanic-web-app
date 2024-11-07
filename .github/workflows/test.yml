@@ -13,6 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Build and start containers with Docker Compose
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ENVIRONMENT: local
+          PORT: 5050
+        run: |
+          docker compose -f docker-compose.yml up -d
+
+      - name: Wait for backend to be healthy
+        run: |
+          docker compose -f docker-compose.yml wait backend
+
       - name: Run tests in backend container
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
