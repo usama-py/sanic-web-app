@@ -26,21 +26,11 @@ jobs:
 
       - name: Build and start containers with Docker Compose
         run: |
-          docker compose -f docker-compose.yml up -d --build
-
-      - name: Wait for backend to be ready
-        run: |
-          echo "Waiting for backend service to be healthy..."
-          until [ "$(docker compose ps -q backend)" ] && \
-                [ "$(docker inspect -f '{{.State.Health.Status}}' $(docker compose ps -q backend))" == "healthy" ]; do
-            echo "Backend is not ready yet. Waiting..."
-            sleep 5
-          done
-          echo "Backend is healthy and ready to proceed."
+          docker compose -f docker-compose.yml up -d
 
       - name: Run tests in backend container
         run: |
-          docker compose exec backend bash -c "pytest --maxfail=1 --disable-warnings"
+          docker compose -f docker-compose.yml exec backend pytest
 
       - name: Display container logs if tests fail
         if: failure()
