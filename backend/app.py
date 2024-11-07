@@ -10,5 +10,8 @@ initialize_app(app)  # Loads environment and configuration
 app.blueprint(survey_bp)
 
 if __name__ == "__main__":
-    PORT=get_env_var('PORT') | 5050
-    app.run(host="0.0.0.0", port=PORT, debug=True, auto_reload=True)
+    PORT=int(get_env_var('PORT'))
+    if(not PORT):
+        PORT = 5050
+    if get_env_var('ENVIRONMENT') == 'local':
+        app.run(host="0.0.0.0", port=PORT, debug=True, auto_reload=True)

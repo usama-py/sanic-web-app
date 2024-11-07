@@ -3,11 +3,19 @@ services:
     build: ./backend
     ports:
       - "5050:5050"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5050/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - sanic_network
     environment:
       MONGO_URI: mongodb://mongo:27017/mydatabase
       CHOKIDAR_USEPOLLING: "true"
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      ENVIRIONMENT: local
+      PORT: 5050
     volumes:
       - ./backend:/app
     command: python app.py

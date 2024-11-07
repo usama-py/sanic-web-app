@@ -46,3 +46,7 @@ async def process_survey(request):
 
     except SanicException as e:
         return json({"error": str(e)}, status=e.status_code)
+
+@survey_bp.get("/health")
+async def health_check(request):
+    return json({"status": "healthy"}, status=200)
