@@ -22,20 +22,20 @@ jobs:
 
       - name: Build and start containers with Docker Compose
         run: |
-          docker compose -f docker-compose.yml up -d
+          docker compose -f testing.yml up -d
 
       - name: Wait for backend to be healthy
         run: |
-          timeout 60s docker compose -f docker-compose.yml wait backend || echo "Timeout reached; continuing..."
+          timeout 60s docker compose -f testing.yml wait backend || echo "Timeout reached; continuing..."
 
       - name: Run tests in backend container
         run: |
-          docker compose -f docker-compose.yml exec backend pytest
+          docker compose -f testing.yml exec backend pytest
 
       - name: Display container logs if tests fail
         if: failure()
         run: |
-          docker compose -f docker-compose.yml logs
+          docker compose -f testing.yml logs
 
       - name: Shutdown Docker Compose
         run: |

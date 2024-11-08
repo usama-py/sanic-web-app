@@ -1,4 +1,5 @@
-from sanic import Blueprint, json
+# survey_controller.py
+from sanic import response
 from sanic.exceptions import SanicException
 from services.validation import validate_user_id, validate_survey_results
 from services.data_processing import process_survey_data
@@ -6,16 +7,12 @@ from services.storage import save_insights_to_file, save_insights_to_mongo
 from services.genai_service import call_genai_with_insights
 from utils.file_utils import check_file_exists, read_file
 import os
-import logging
-
-survey_bp = Blueprint("survey_bp")
-
-@survey_bp.post("/process-survey")
 async def process_survey(request):
     data = request.json
     system_prompt_file = 'system_prompt.txt'
-    logging.debug(f"Received data: {data}")
     try:
+        if(not data):
+            raise SanicException("Please send valid data", status_code=500)
         user_id = data.get("user_id")
         survey_results = data.get("survey_results")
         prompt_files_folder = os.path.join(os.getcwd(), 'prompt_files')
@@ -39,14 +36,13 @@ async def process_survey(request):
 
         save_insights_to_mongo(insights, user_id)
 
-        return json({
+        return response.json({
             "message": "Survey data saved!",
             "insights": insights
-        }, status=200)
+        }, status=200,headers={"Access-Control-Allow-Origin": "*"})
 
     except SanicException as e:
-        return json({"error": str(e)}, status=e.status_code)
+        return response.json({"error": str(e)}, status=e.status_code, headers={"Access-Control-Allow-Origin": "*"})
 
-@survey_bp.get("/health")
 async def health_check(request):
-    return json({"status": "healthy"}, status=200)
+    return response.json({"status": "healthy"}, status=200)
