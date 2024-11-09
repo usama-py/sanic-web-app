@@ -28,14 +28,20 @@ jobs:
         run: |
           timeout 60s docker compose -f testing.yml wait backend || echo "Timeout reached; continuing..."
 
-      - name: Run tests in backend container
+      - name: Run tests with coverage in the backend container
         run: |
-          docker compose -f testing.yml exec backend pytest
+          docker compose -f testing.yml exec backend pytest --cov=/app --cov-report=xml:/app/coverage.xml
 
       - name: Display container logs if tests fail
         if: failure()
         run: |
           docker compose -f testing.yml logs
+
+      - name: Upload coverage to GitHub Actions (optional)
+        uses: codecov/codecov-action@v3
+        with:
+          file: /app/coverage.xml
+        if: success()
 
       - name: Shutdown Docker Compose
         run: |
