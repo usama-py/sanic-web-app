@@ -13,7 +13,7 @@ Extend(app)
 @app.options("/process_survey")
 async def handle_preflight(request: Request):
     """Handle pre-flight CORS request."""
-    allowed_origins = "*"
+    allowed_origins = "http://localhost:3000"
     allowed_methods = "POST, OPTIONS"
     allowed_headers = "Content-Type, Authorization"
 

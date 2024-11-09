@@ -39,10 +39,10 @@ async def process_survey(request):
         return response.json({
             "message": "Survey data saved!",
             "insights": insights
-        }, status=200,headers={"Access-Control-Allow-Origin": "*"})
+        }, status=200,headers={"Access-Control-Allow-Origin": "http://localhost:3000"})
 
     except SanicException as e:
-        return response.json({"error": str(e)}, status=e.status_code, headers={"Access-Control-Allow-Origin": "*"})
+        return response.json({"error": str(e)}, status=e.status_code, headers={"Access-Control-Allow-Origin": "http://localhost:3000"})
 
 async def health_check(request):
     return response.json({"status": "healthy"}, status=200)
