@@ -28,7 +28,7 @@ def test_process_survey(client):
 def test_invalid_survey_data(client):
     survey_data = {
         "user_id": "valid_user_123",
-        "survey_results": [{"question_number": i, "question_value": 8} for i in range(1, 11)]  # Invalid question_value
+        "survey_results": [{"question_number": i, "question_value": 8} for i in range(1, 11)]
     }
     request, response = client.post("/process_survey", json=survey_data)
     assert response.status == 400
